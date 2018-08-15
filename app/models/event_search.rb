@@ -3,6 +3,8 @@ require 'open-uri'
 require 'json'
 require_relative '../../config/secrets'
 
+BASE_URL="https://api.meetup.com/2/open_events?"
+
 class EventSearch
     #belongs_to :user --do we need this if no database persistence?
     attr_accessor :long, :lat
@@ -13,14 +15,16 @@ class EventSearch
 
     def get_search_results
         token = MeetupKey::API_KEY
-        url="https://api.meetup.com/find/upcoming_events?&sign=false&photo-host=public&page=20&key=#{token}"
-
+        #old url="https://api.meetup.com/find/upcoming_events?&sign=false&photo-host=public&page=20&key=#{token}"
+        url=BASE_URL+"&sign=true&photo-host=public&lat=#{self.lat}&lon=#{self.long}&radius=5&page=20&key=#{token}"
+        #url="https://api.meetup.com/2/open_events?&sign=true&photo-host=public&lat=38.91&lon=-77.02&radius=5&page=20&key=#{token}"
+        puts url
         uri = URI.parse(url)
         response = Net::HTTP.get_response(uri)
         data = response.body
         meetups = JSON.parse(data)
-        puts meetups
+        return meetups
+        #puts meetups
     end
 end
 
-# get_search_results

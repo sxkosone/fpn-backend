@@ -14,6 +14,7 @@ class CreateEvents < ActiveRecord::Migration[5.2]
       t.string :group_name
       t.string :group_who
       t.integer :meetup_id
+      t.string :photo_url
 
       t.timestamps
     end

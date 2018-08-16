@@ -1,9 +1,12 @@
 class UsersController < ApplicationController
     def search
         #route: users/search
-        #conducts fetch to get meetup event data, returns json data
+        #does fetch to get meetup event data, returns json data
         #dummy location: longitude first, then latitude
-        new_search = EventSearch.new(-74.00, 40.71)
+        puts "latitude: #{params[:lat]}"
+        puts "longitude: #{params[:long]}"
+        
+        new_search = EventSearch.new(params[:long], params[:lat])
         results = new_search.get_search_results
         render json: results
     end
@@ -18,6 +21,7 @@ class UsersController < ApplicationController
     end
 
     def destroy
+        #delete the user
     end
 
     def show

@@ -10,33 +10,40 @@ class UsersController < ApplicationController
     end
 
     def update 
-        #update user
-        #or create new event through user association
+      
+        params1 = params.require(:user).permit(:userId, event:{})
+        event = Event.find_or_create_by(params1["event"])
+        current_user.events << event
+        render json: current_user
     end
 
     def destroy
         #delete the user
     end
 
-    def show
-        # render json: {"current": current_user, "you're": "show route"}
-        #returns users all events
-    end
 
     def login
         user = User.find_by(username: params[:username])
         password = params[:password]
         #confirms that the user exists and password is correct sets token if user is correct
         if user && user.authenticate(password)
-            render json: {success: true, token: generate_token(user)}
+            render json: {success: true, token: generate_token(user), user_id: user.id}
         else
             render json: {success: false}
         end
     end
 
 
+    def show
+     
+        render json: current_user
+       
+    end
+
 
     private
+
+
 
     def generate_token(user)
         alg = 'HS256'
@@ -69,6 +76,8 @@ class UsersController < ApplicationController
 
     #returns a 401 message if the user is not logged in.
     def authorized
+    
+        puts "Thow Shall Not Pass"
         render json: {message: "Thow Shall Not Pass"}, status: 401 unless logged_in?
     end
 

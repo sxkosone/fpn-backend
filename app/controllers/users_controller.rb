@@ -1,6 +1,8 @@
 class UsersController < ApplicationController
-    before_action :authorized
-    skip_before_action :authorized, only: [:create, :login]
+   
+    include ActionController::HttpAuthentication::Token::ControllerMethods
+    before_action :authorized, only:[:update, :destroy, :show]
+    
 
 
     def create
@@ -17,6 +19,7 @@ class UsersController < ApplicationController
     end
 
     def show
+        # render json: {"current": current_user, "you're": "show route"}
         #returns users all events
     end
 
@@ -26,7 +29,7 @@ class UsersController < ApplicationController
         #confirms that the user exists and password is correct sets token if user is correct
         if user && user.authenticate(password)
             render json: {success: true, token: generate_token(user)}
-        elsif
+        else
             render json: {success: false}
         end
     end
@@ -48,7 +51,7 @@ class UsersController < ApplicationController
             begin
                 decoded_token = JWT.decode(jwt_token, "thisIsLowBudget")
             
-            resuce JWT::DecodeError
+            rescue JWT::DecodeError
                 return nil
             end 
 

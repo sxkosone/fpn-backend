@@ -5,18 +5,19 @@ class SearchController < ApplicationController
         #remember longitude first, then latitude
         puts "latitude: #{params[:lat]}"
         puts "longitude: #{params[:long]}"
-        
-        new_search = EventSearch.new(params[:long], params[:lat], "open_events?")
+        puts "category: #{params[:category]}"
+        new_search = EventSearch.new(params[:long], params[:lat], params[:category], "open_events")
         results = new_search.get_search_results
         render json: results
     end
 
     def categories
+        #route search/categories
         #returns a list of the 33 different meetup categories
         #example search url https://api.meetup.com/2/categories?&sign=true&photo-host=public&page=200
-        # new_search = EventSearch.new(params[:long], params[:lat], "open_events?")
-        # results = new_search.get_search_results
-        # render json: results
+        new_search = EventSearch.new(0, 0, "categories")
+        results = new_search.category_search
+        render json: results
     end
 
     

@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
-  # get '/users/search', to: 'users#search' (this is now in search controller)
+ 
+  post '/users/login', to: 'users#login'
   resources :users, only: [:create, :update, :destroy, :show]
   resources :search, only: [:index]
   get '/search/categories', to: 'search#categories'

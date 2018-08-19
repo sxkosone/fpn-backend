@@ -10,7 +10,6 @@ class UsersController < ApplicationController
     end
 
     def update 
-      
         params1 = params.require(:user).permit(:userId, event:{})
         event = Event.find_or_create_by(params1["event"])
         current_user.events << event

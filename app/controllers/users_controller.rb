@@ -5,13 +5,23 @@ class UsersController < ApplicationController
     
 
 
-    def create
-        #create new user, save to database
+    def create 
+        #local strong params
+        params_1 = params.require(:user).permit(:username, :firstName, :lastName, :password)
+        #create user object
+        user = User.new(username: params_1["username"], first_name: params_1["firstName"], last_name: params_1["lastName"], password: params_1["password"])
+        #manages validation sends errors back to front end
+        if user.valid?
+            user.save
+            render json: {success: true, token: generate_token(user), user_id: user.id}
+        else
+            render json: {success: false, errors: user.errors.messages}
+        end 
     end
 
     def update 
-        params1 = params.require(:user).permit(:userId, event:{})
-        event = Event.find_or_create_by(params1["event"])
+        params_1 = params.require(:user).permit(:userId, event:{})
+        event = Event.find_or_create_by(params_1["event"])
         current_user.events << event
         render json: current_user
     end

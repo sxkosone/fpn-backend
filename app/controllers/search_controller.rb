@@ -7,7 +7,8 @@ class SearchController < ApplicationController
         puts "longitude: #{params[:long]}"
         puts "category: #{params[:category]}"
         puts "text: #{params[:text]}"
-        new_search = EventSearch.new(params[:long], params[:lat], params[:category], params[:text], "open_events")
+        puts "radius: #{params[:radius]}" 
+        new_search = EventSearch.new(params[:long], params[:lat], params[:radius], params[:category], params[:text], "open_events")
         results = new_search.get_search_results
         render json: results
     end

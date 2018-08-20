@@ -20,10 +20,20 @@ class UsersController < ApplicationController
     end
 
     def update 
-        params_1 = params.require(:user).permit(:userId, event:{})
-        event = Event.find_or_create_by(params_1["event"])
-        current_user.events << event
-        render json: current_user
+        params_1 = params.require(:user).permit(:userId, :removeEvent, event:{} )
+
+        #check to see if it is remove or add
+        if params_1["removeEvent"] == true
+            current_user.events.delete(params_1["event"]["id"])
+            render json: current_user
+        else
+            event = Event.find_or_create_by(params_1["event"])
+            #insures no double event add
+            if current_user.events.include?(event) == false
+                current_user.events << event
+            end
+            render json: current_user
+        end
     end
 
     def destroy
@@ -32,8 +42,9 @@ class UsersController < ApplicationController
 
 
     def login
-        user = User.find_by(username: params[:username])
-        password = params[:password]
+        params_1 = params.require(:user).permit(:username, :password)
+        user = User.find_by(username: params_1["username"])
+        password = params_1["password"]
         #confirms that the user exists and password is correct sets token if user is correct
         if user && user.authenticate(password)
             render json: {success: true, token: generate_token(user), user_id: user.id}

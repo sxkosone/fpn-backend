@@ -8,11 +8,12 @@ BASE_URL="https://api.meetup.com/2/"
 
 class EventSearch
     #belongs_to :user --do we need this if no database persistence?
-    attr_accessor :long, :lat, :search_type, :category_id
-    def initialize(long, lat, category_id=nil, search_type)
+    attr_accessor :long, :lat, :search_type, :category_id, :text
+    def initialize(long, lat, category_id=nil, text=nil, search_type)
         @long = long
         @lat = lat
         @category_id = category_id
+        @text = text
         @search_type = search_type
     end
 
@@ -20,12 +21,17 @@ class EventSearch
         token = MeetupKey::API_KEY
         #note: page=20 determines how many results to return. We can up this!
         category_string=""
-        if !self.category_id.nil?
-            category_string="&category=#{self.category_id}"
+        text_string=""
+        if !self.category_id.nil? && self.category_id != "0"
+            category_string="&and_text=True&category=#{self.category_id}"
         end
 
-        url=BASE_URL+"#{self.search_type}?&sign=true&photo-host=public&lat=#{self.lat}&lon=#{self.long}&radius=5#{category_string}&page=20&key=#{token}"
-        #url="https://api.meetup.com/2/open_events?&sign=true&photo-host=public&lat=38.91&lon=-77.02&radius=5&page=20&key=#{token}"
+        if !self.text.nil?
+            text_string="&text=#{self.text}"
+        end
+
+        url=BASE_URL+"#{self.search_type}?&sign=true&text_format=plain&photo-host=public&lat=#{self.lat}&lon=#{self.long}&radius=5#{category_string}#{text_string}&page=20&key=#{token}"
+        #example url="https://api.meetup.com/2/open_events?&sign=true&photo-host=public&lat=38.91&lon=-77.02&radius=5&page=20&key=#{token}"
         puts "searching with this url: " + url
         uri = URI.parse(url)
         response = Net::HTTP.get_response(uri)

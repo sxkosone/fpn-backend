@@ -24,7 +24,7 @@ class UsersController < ApplicationController
     end
 
     def update 
-        params_1 = params.require(:user).permit(:userId, :removeEvent, event:{} )
+        params_1 = params.require(:user).permit(:removeEvent, event:{} )
 
         #check to see if it is remove or add
         if params_1["removeEvent"] == true

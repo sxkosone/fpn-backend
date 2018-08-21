@@ -29,7 +29,7 @@ class EventSearch
             text_string="&text=#{self.text}"
         end
 
-        url=BASE_URL+"#{self.search_type}?&sign=true&text_format=plain&photo-host=public&lat=#{self.lat}&lon=#{self.long}&radius=#{self.radius}#{category_string}#{text_string}&page=20&key=#{token}"
+        url=BASE_URL+"#{self.search_type}?&sign=true&text_format=plain&photo-host=public&lat=#{self.lat}&lon=#{self.long}&radius=#{self.radius}#{category_string}#{text_string}&page=50&key=#{token}"
         #example url="https://api.meetup.com/2/open_events?&sign=true&photo-host=public&lat=38.91&lon=-77.02&radius=5&page=20&key=#{token}"
         puts "searching with this url: " + url
         uri = URI.parse(url)

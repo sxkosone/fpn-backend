@@ -1,9 +1,7 @@
 require 'net/http'
 require 'open-uri'
 require 'json'
-require_relative '../../config/secrets'
 
-#BASE_URL="https://api.meetup.com/2/open_events?"
 BASE_URL="https://api.meetup.com/2/"
 
 class EventSearch
@@ -19,7 +17,7 @@ class EventSearch
     end
 
     def get_search_results
-        token = MeetupKey::API_KEY
+        token = ENV["API_KEY"]
         #note: page=20 determines how many results to return. We can up this!
         category_string=""
         text_string=""
@@ -44,7 +42,7 @@ class EventSearch
 
     def category_search
         #example search url https://api.meetup.com/2/categories?&sign=true&photo-host=public&page=200
-        token = MeetupKey::API_KEY
+        token = ENV["API_KEY"]
         url=BASE_URL+self.search_type+"?&sign=true&photo-host=public&page=50&key=#{token}"
         puts "searching with this url: " + url
         uri = URI.parse(url)

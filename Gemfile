@@ -55,3 +55,6 @@ gem 'active_model_serializers'
 gem 'nokogiri', '~> 1.6', '>= 1.6.8'
 #json
 gem 'json', '~> 2.1'
+
+#figaro for env variables, api keys
+gem 'figaro'

@@ -27,7 +27,7 @@ class EventSearch
             category_string="&and_text=True&category=#{self.category_id}"
         end
 
-        if !self.text.nil?
+        if !self.text.nil? && self.text != ""
             text_string="&text=#{self.text}"
         end
 

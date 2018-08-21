@@ -17,7 +17,7 @@ class SearchController < ApplicationController
         #route search/categories
         #returns a list of the 33 different meetup categories
         #example search url https://api.meetup.com/2/categories?&sign=true&photo-host=public&page=200
-        new_search = EventSearch.new(0, 0, "categories")
+        new_search = EventSearch.new(0, 0, 5, nil, nil, "categories")
         results = new_search.category_search
         render json: results
     end

@@ -43,7 +43,7 @@ class EventSearch
     def category_search
         #example search url https://api.meetup.com/2/categories?&sign=true&photo-host=public&page=200
         token = ENV["API_KEY"]
-        url=BASE_URL+self.search_type+"?&sign=true&photo-host=public&page=50&key=#{token}"
+        url=BASE_URL+self.search_type+"?&sign=true&photo-host=public&page=20&key=#{token}"
         puts "searching with this url: " + url
         uri = URI.parse(url)
         response = Net::HTTP.get_response(uri)

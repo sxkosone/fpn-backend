@@ -35,8 +35,15 @@ class EventSearch
         uri = URI.parse(url)
         response = Net::HTTP.get_response(uri)
         data = response.body
-        meetups = JSON.parse(data)
-        return meetups
+        
+        #on some occasions, Meetup API sends back empty string
+        if (data != nil && data != "")
+            meetups = JSON.parse(data)
+            return meetups
+        else
+            puts data
+            return {results: []}
+        end
         #puts meetups
     end
 
@@ -51,5 +58,6 @@ class EventSearch
         categories = JSON.parse(data)
         return categories
     end
+
 end
 
